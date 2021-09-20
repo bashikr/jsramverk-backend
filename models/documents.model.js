@@ -13,26 +13,31 @@ let db;
 
 async function printAllDocs() {
     const res = await db.collection.find().toArray();
+
     return res;
 }
 
 async function printOneDoc(id) {
     const res = await db.collection.find(id).toArray();
+
     return res;
 }
 
 async function insertADoc(docInsertionOrder) {
     const res = await db.collection.insertOne(docInsertionOrder);
+
     return res;
 }
 
 async function updateADoc(query, update, options) {
     const res = await db.collection.updateOne(query, update, options);
+
     return res;
 }
 
 async function deleteADoc(query) {
     const res = await db.collection.deleteOne(query);
+
     return res;
 }
 
@@ -42,4 +47,4 @@ module.exports = {
     updateADoc: updateADoc,
     deleteADoc: deleteADoc,
     printOneDoc: printOneDoc
-}
+};

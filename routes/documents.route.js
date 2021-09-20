@@ -7,26 +7,24 @@ const { ObjectId } = require('bson');
 
 router.get("/", async (request, response) => {
     try {
-        const pods = await documents.printAllDocs()
-        response.status(201).send(pods);
-        response.json(pods);
+        const pods = await documents.printAllDocs();
+
+        response.status(200).send(pods);
     } catch (err) {
         response.status(400).send({ error: err });
-        response.json(err);
     }
 });
 
 router.get("/:id", async (request, response) => {
-    let idObj = ObjectId(request.params.id)
-
+    let idObj = ObjectId(request.params.id);
     var query = { '_id': idObj };
+
     try {
-        const pods = await documents.printOneDoc(query)
-        response.status(201).send(pods);
-        response.json(pods);
+        const pods = await documents.printOneDoc(query);
+
+        response.status(200).send(pods);
     } catch (err) {
         response.status(400).send({ error: err });
-        response.json(err);
     }
 });
 
@@ -35,10 +33,10 @@ router.post("/create-doc", urlencodedParser, async (request, response) => {
         'title': request.body.title,
         'content': request.body.content,
         'creationDate': new Date()
-    }
+    };
 
     try {
-        const pods = await documents.insertADoc(docInsertionOrder)
+        const pods = await documents.insertADoc(docInsertionOrder);
 
         response.status(201).send(pods);
     } catch (err) {
@@ -47,7 +45,7 @@ router.post("/create-doc", urlencodedParser, async (request, response) => {
 });
 
 router.put("/update-doc", urlencodedParser, async (request, response) => {
-    let idObj = ObjectId(request.body._id)
+    let idObj = ObjectId(request.body._id);
     var query = { '_id': idObj };
 
     var update = {
@@ -63,7 +61,8 @@ router.put("/update-doc", urlencodedParser, async (request, response) => {
 
     if (request.body._id) {
         try {
-            const pods = await documents.updateADoc(query, update, options)
+            const pods = await documents.updateADoc(query, update, options);
+
             response.status(201).send(pods);
         } catch (err) {
             response.status(400).send({ error: err });
@@ -72,12 +71,13 @@ router.put("/update-doc", urlencodedParser, async (request, response) => {
 });
 
 router.delete("/delete-doc/:id", urlencodedParser, async (request, response) => {
-    let res = ObjectId(request.params.id)
+    let res = ObjectId(request.params.id);
     var query = { '_id': res };
 
     try {
-        const pods = await documents.deleteADoc(query)
-        response.status(201).send(pods);
+        const pods = await documents.deleteADoc(query);
+
+        response.status(200).send(pods);
     } catch (err) {
         response.status(400).send({ error: err });
     }

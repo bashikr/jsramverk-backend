@@ -42,7 +42,3 @@ http://localhost:1337
 | /documents/create-doc   | POST        | Creates a new document  |
 | /documents/update-doc   | PUT        | Updates a specific document in the docs collection  |
 | /documents/delete-doc/:id  | DELETE        | Deletes a specific document from the docs collection  |
-
-
-
-

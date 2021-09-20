@@ -1,14 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (request, response, next) {
-    const data = {
-        data: {
-            msg: "Hello Webbis"
-        }
-    };
-
-    response.json(data);
+router.get('/', function (request, response) {
+    response.status(200).send({
+        msg: "Hello Webbis"
+    });
 });
 
 module.exports = router;
