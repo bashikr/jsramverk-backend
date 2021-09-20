@@ -1,5 +1,11 @@
 const createConnection = require('../connection-mongodb/db.js');
-const config = require("../connection-mongodb/config.json");
+var config;
+
+try {
+    config = require("../connection-mongodb/config.json");
+} catch (e) {
+    console.log(e);
+}
 
 let db;
 

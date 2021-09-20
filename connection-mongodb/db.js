@@ -1,5 +1,11 @@
 const mongo = require("mongodb").MongoClient;
-const config = require("./config.json");
+var config;
+
+try {
+    config = require("./config.json");
+} catch (e) {
+    console.log(e);
+}
 
 async function createConnection(collectionName) {
     let dsn = `mongodb+srv://${config.username}:${config.password}` +
