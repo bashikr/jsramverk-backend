@@ -7,8 +7,6 @@ node_js:
   - "11"
   - "10"
 
-sudo: false
-
 before_script:
   - npm install
 
