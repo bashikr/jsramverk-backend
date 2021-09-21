@@ -19,28 +19,32 @@ try {
 let id = '';
 let db;
 
-describe('Test the functionality of documents API', () => {
-    before(async function() {
-        db = await createConnection(config.docsCollection);
+(async function () {
+    db = await createConnection(config.docsCollection);
 
-        db.db.listCollections(
-            { name: config.docsCollection }
-        )
-            .next()
-            .then(async function (info) {
-                if (info) {
-                    await db.collection.drop();
-                }
-            })
-            .catch(function (err) {
-                console.error(err);
-            })
-            .finally(async function () {
-                await db.client.close();
-            });
+    db.db.listCollections(
+        { name: config.docsCollection }
+    )
+        .next()
+        .then(async function (info) {
+            if (info) {
+                await db.collection.drop();
+            }
+        })
+        .catch(function (err) {
+            console.error(err);
+        })
+        .finally(async function () {
+            await db.client.close();
+        });
+
+    process.on("exit", () => {
+        db.end();
     });
+})();
 
 
+describe('Test the functionality of documents API', () => {
     describe('GET /documents', () => {
         it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
             chai.request(server)
