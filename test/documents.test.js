@@ -25,7 +25,7 @@ describe('Test the functionality of documents API', () => {
             const db = await createConnection(config.docsCollection);
 
             db.db.listCollections(
-                { name: collectionName }
+                { name: config.docsCollection }
             )
                 .next()
                 .then(async function (info) {
