@@ -8,7 +8,15 @@ chai.should();
 chai.use(chaiHttp);
 
 const createConnection = require("../connection-mongodb/db");
-const config = require("../connection-mongodb/config.json");
+
+let config;
+
+try {
+    config = require("../connection-mongodb/config.json");
+} catch (err) {
+    console.error(err);
+}
+
 const collectionName = config.docsCollection;
 
 let id = '';
