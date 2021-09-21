@@ -19,27 +19,24 @@ try {
 let id = '';
 
 describe('Test the functionality of documents API', () => {
-    before(() => {
-        return new Promise(async (resolve) => {
-            const db = await createConnection(config.docsCollection);
+    before(async () => {
+        const db = await createConnection(config.docsCollection);
 
-            db.db.listCollections(
-                { name: config.docsCollection }
-            )
-                .next()
-                .then(async function (info) {
-                    if (info) {
-                        await db.collection.drop();
-                    }
-                })
-                .catch(function (err) {
-                    console.error(err);
-                })
-                .finally(async function () {
-                    await db.client.close();
-                    return resolve();
-                });
-        });
+        db.db.listCollections(
+            { name: config.docsCollection }
+        )
+            .next()
+            .then(async function (info) {
+                if (info) {
+                    await db.collection.drop();
+                }
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .finally(async function () {
+                await db.client.close();
+            });
     });
 
 
