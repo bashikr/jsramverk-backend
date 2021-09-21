@@ -6,12 +6,12 @@ const documents = require("../models/documents.model.js");
 const { ObjectId } = require('bson');
 
 router.get("/", async (request, response) => {
-    try {
-        const pods = await documents.printAllDocs();
+    const pods = await documents.printAllDocs();
 
+    if (pods.length > 0) {
         response.status(200).send(pods);
-    } catch (err) {
-        response.status(400).send({ error: err });
+    } else if (pods.length === 0) {
+        response.status(400).send({ error: 'Document collection is empty' });
     }
 });
 
@@ -19,12 +19,12 @@ router.get("/:id", async (request, response) => {
     let idObj = ObjectId(request.params.id);
     var query = { '_id': idObj };
 
-    try {
-        const pods = await documents.printOneDoc(query);
+    let pods = await documents.printOneDoc(query);
 
-        response.status(200).send(pods);
-    } catch (err) {
-        response.status(400).send({ error: err });
+    if (pods === null) {
+        return response.status(404).send({ error: 'Requested document is not found' });
+    } else {
+        return response.status(200).send(pods);
     }
 });
 
@@ -35,12 +35,12 @@ router.post("/create-doc", urlencodedParser, async (request, response) => {
         'creationDate': new Date()
     };
 
-    try {
+    if (typeof (request.body.title) === 'string' && typeof (request.body.content) === 'string') {
         const pods = await documents.insertADoc(docInsertionOrder);
 
         response.status(201).send(pods);
-    } catch (err) {
-        response.status(400).send({ error: err });
+    } else {
+        response.status(400).send({ error: 'Title and content should be of type string' });
     }
 });
 
@@ -59,14 +59,12 @@ router.put("/update-doc", urlencodedParser, async (request, response) => {
         $set: { 'upsert': false }
     };
 
-    if (request.body._id) {
-        try {
-            const pods = await documents.updateADoc(query, update, options);
+    if (typeof (request.body.title) === 'string' && typeof (request.body.content) === 'string') {
+        const pods = await documents.updateADoc(query, update, options);
 
-            response.status(201).send(pods);
-        } catch (err) {
-            response.status(400).send({ error: err });
-        }
+        response.status(201).send(pods);
+    } else {
+        response.status(400).send({ error: 'Title and content should be of type string' });
     }
 });
 
@@ -74,12 +72,12 @@ router.delete("/delete-doc/:id", urlencodedParser, async (request, response) => 
     let res = ObjectId(request.params.id);
     var query = { '_id': res };
 
-    try {
-        const pods = await documents.deleteADoc(query);
+    const pods = await documents.deleteADoc(query);
 
+    if (pods.deletedCount === 1) {
         response.status(200).send(pods);
-    } catch (err) {
-        response.status(400).send({ error: err });
+    } else {
+        response.status(400).send({ error: 'The given document id is invalid' });
     }
 });
 

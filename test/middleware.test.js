@@ -7,14 +7,14 @@ const server = require('../app.js');
 chai.should();
 chai.use(chaiHttp);
 
-
-describe('Test the functionality of the landing page', () => {
-    describe('GET /', () => {
-        it('200 HAPPY PATH', (done) => {
+describe('Test the functionality of middleware', () => {
+    describe('GET /f', () => {
+        it('404 PATH NOT FOUND', (done) => {
             chai.request(server)
-                .get("/")
+                .get("/f")
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(404);
+                    res.body.should.be.an("object");
                     done();
                 });
         });

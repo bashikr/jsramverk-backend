@@ -10,6 +10,7 @@
     "eslint": "eslint .",
     "watch": "nodemon app.js",
     "clean": "rm -rf node_modules package-lock.json",
+    "clean-tests": "npm run clean && npm install && npm test",
     "production1": "SET NODE_ENV='production' & node app.js",
     "production2": "cross-env NODE_ENV='production' & node app.js"
   },

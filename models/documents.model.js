@@ -24,7 +24,7 @@ async function printAllDocs() {
 }
 
 async function printOneDoc(id) {
-    const res = await db.collection.find(id).toArray();
+    const res = await db.collection.findOne(id);
 
     return res;
 }
