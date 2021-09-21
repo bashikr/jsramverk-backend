@@ -17,14 +17,12 @@ try {
     console.error(err);
 }
 
-const collectionName = config.docsCollection;
-
 let id = '';
 
 describe('Test the functionality of documents API', () => {
     before(() => {
         return new Promise(async (resolve) => {
-            const db = await createConnection(collectionName);
+            const db = await createConnection(config.docsCollection);
 
             db.db.listCollections(
                 { name: collectionName }
