@@ -7,14 +7,13 @@ const server = require('../app.js');
 chai.should();
 chai.use(chaiHttp);
 
-const createConnection = require("../connection-mongodb/db");
-
-let config;
+const createConnection = require("../connection-mongodb/db.js");
+var config;
 
 try {
     config = require("../connection-mongodb/config.json");
-} catch (err) {
-    console.error(err);
+} catch (e) {
+    console.log(e);
 }
 
 let id = '';
@@ -115,9 +114,6 @@ describe('Test the functionality of documents API', () => {
                 });
         });
     });
-
-
-
 
     describe('GET /documents/:id', () => {
         it('200 HAPPY PATH', (done) => {
