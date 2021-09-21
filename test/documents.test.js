@@ -37,10 +37,11 @@ describe('Test the functionality of documents API', () => {
                 })
                 .finally(async function () {
                     await db.client.close();
-                    resolve();
+                    return resolve();
                 });
         });
     });
+
 
     describe('GET /documents', () => {
         it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
