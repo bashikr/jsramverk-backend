@@ -17,10 +17,11 @@ try {
 }
 
 let id = '';
+let db;
 
 describe('Test the functionality of documents API', () => {
-    before(async () => {
-        const db = await createConnection(config.docsCollection);
+    before(async function() {
+        db = await createConnection(config.docsCollection);
 
         db.db.listCollections(
             { name: config.docsCollection }
