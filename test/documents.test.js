@@ -7,47 +7,22 @@ const server = require('../app.js');
 chai.should();
 chai.use(chaiHttp);
 
-const createConnection = require("../connection-mongodb/db.js");
-const collectionName= "docs";
-
 let id = '';
-let db;
 
 describe('Test the functionality of documents API', () => {
-    before(async function() {
-        this.enableTimeouts(false);
-        db = await createConnection(collectionName);
-
-        db.db.listCollections(
-            { name: collectionName }
-        )
-            .next()
-            .then(async function (info) {
-                if (info) {
-                    await db.collection.drop();
-                }
-            })
-            .catch(function (err) {
-                console.error(err);
-            })
-            .finally(async function () {
-                await db.client.close();
-            });
-    });
-
-    describe('GET /documents', () => {
-        it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
-            chai.request(server)
-                .get("/documents")
-                .end((err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.an("object");
-                    res.body.should.have.property('error');
-                    res.body.should.have.property('error').eq('Document collection is empty');
-                    done();
-                });
-        });
-    });
+    // describe('GET /documents', () => {
+    //     it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
+    //         chai.request(server)
+    //             .get("/documents")
+    //             .end((err, res) => {
+    //                 res.should.have.status(400);
+    //                 res.body.should.be.an("object");
+    //                 res.body.should.have.property('error');
+    //                 res.body.should.have.property('error').eq('Document collection is empty');
+    //                 done();
+    //             });
+    //     });
+    // });
 
     describe('POST /documents/create-doc', () => {
         it('201 HAPPY PATH', (done) => {
