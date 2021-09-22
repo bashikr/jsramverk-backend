@@ -8,7 +8,7 @@ const createConnection = require("../connection-mongodb/db.js");
 chai.should();
 chai.use(chaiHttp);
 
-var collectionName= "docs";
+var collectionName = "docs";
 var db;
 var id = '';
 
@@ -179,7 +179,6 @@ describe('Test the functionality of documents API', () => {
 
         it('404 SAD PATH', async () => {
             let fakeId = "123456789123";
-
             const res = await chai.request(server)
                 .delete("/documents/delete-doc/" + fakeId);
 
