@@ -14,27 +14,17 @@ var id = '';
 
 
 describe('Test the functionality of documents API', () => {
-    before(() => {
+    before(async function () {
         this.timeout(0);
-        async () => {
-            db = await createConnection(collectionName);
+        db = await createConnection(collectionName);
 
-            db.db.listCollections(
-                { name: collectionName }
-            )
-                .next()
-                .then(async function (info) {
-                    if (info) {
-                        await db.collection.drop();
-                    }
-                })
-                .catch(function (err) {
-                    console.error(err);
-                })
-                .finally(async function () {
-                    await db.client.close();
-                });
-        };
+        db.db.listCollections(
+            { name: collectionName }
+        );
+
+        await db.collection.drop();
+
+        await db.client.close();
     });
 
     // get sure that the collection you want to test is empty before you execute this test
