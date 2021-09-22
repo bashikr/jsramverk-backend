@@ -39,6 +39,7 @@ describe('Test the functionality of documents API', () => {
                 .end((err, res) => {
                     res.should.have.status(201);
                     res.body.should.be.an("object");
+
                     done();
                 });
         });
@@ -60,6 +61,7 @@ describe('Test the functionality of documents API', () => {
                     res.body.should.have.property('error');
                     res.body.should.have.property('error')
                         .eq('Title and content should be of type string');
+
                     done();
                 });
         });
@@ -94,6 +96,7 @@ describe('Test the functionality of documents API', () => {
                     res.body.should.have.property("title");
                     res.body.should.have.property("content");
                     res.body.should.have.property("creationDate");
+
                     done();
                 });
         });
@@ -107,6 +110,7 @@ describe('Test the functionality of documents API', () => {
                     res.body.should.be.an("object");
                     res.body.should.have.property('error');
                     res.body.should.have.property('error').eq('Requested document is not found');
+
                     done();
                 });
         });
@@ -128,6 +132,7 @@ describe('Test the functionality of documents API', () => {
                 .end((err, res) => {
                     res.should.have.status(201);
                     res.body.should.be.an("object");
+
                     done();
                 });
         });
@@ -152,20 +157,22 @@ describe('Test the functionality of documents API', () => {
                     res.body.should.have.property('error');
                     res.body.should.have.property('error')
                         .eq('Title and content should be of type string');
+
                     done();
                 });
         });
     });
 
     describe('DELETE /documents/delete-doc', () => {
-        it('200 HAPPY PATH', (done) => {
-            chai.request(server)
-                .delete("/documents/delete-doc/" + id)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    done();
-                });
-        });
+        // it('200 HAPPY PATH', (done) => {
+        //     chai.request(server)
+        //         .delete("/documents/delete-doc/" + id)
+        //         .end((err, res) => {
+        //             res.should.have.status(200);
+
+        //             done();
+        //         });
+        // });
 
         it('404 SAD PATH', (done) => {
             let fakeId = "123456789123";
@@ -177,6 +184,7 @@ describe('Test the functionality of documents API', () => {
                     res.body.should.have.property('error');
                     res.body.should.have.property('error')
                         .eq('The given document id is not found');
+
                     done();
                 });
         });
