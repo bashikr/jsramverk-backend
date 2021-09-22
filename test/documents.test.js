@@ -15,6 +15,7 @@ var id = '';
 
 describe('Test the functionality of documents API', () => {
     before(() => {
+        this.timeout(0);
         async () => {
             db = await createConnection(collectionName);
 
