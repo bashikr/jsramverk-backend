@@ -34,7 +34,6 @@ describe('Test the functionality of documents API', () => {
             });
     });
 
-
     describe('GET /documents', () => {
         it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
             chai.request(server)
