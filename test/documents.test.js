@@ -3,13 +3,13 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
-const createConnection = require("../connection-mongodb/db.js");
+// const createConnection = require("../connection-mongodb/db.js");
 
 chai.should();
 chai.use(chaiHttp);
 
-var collectionName = "docs";
-var db;
+// var collectionName = "docs";
+// var db;
 var id = '';
 
 
