@@ -8,43 +8,33 @@ chai.should();
 chai.use(chaiHttp);
 
 const createConnection = require("../connection-mongodb/db.js");
-var config;
-
-try {
-    config = require("../connection-mongodb/config.json");
-} catch (e) {
-    console.log(e);
-}
+const collectionName= "docs";
 
 let id = '';
 let db;
 
-(async function () {
-    db = await createConnection(config.docsCollection);
-
-    db.db.listCollections(
-        { name: config.docsCollection }
-    )
-        .next()
-        .then(async function (info) {
-            if (info) {
-                await db.collection.drop();
-            }
-        })
-        .catch(function (err) {
-            console.error(err);
-        })
-        .finally(async function () {
-            await db.client.close();
-        });
-
-    process.on("exit", () => {
-        db.end();
-    });
-})();
-
-
 describe('Test the functionality of documents API', () => {
+    before(async function() {
+        db = await createConnection(collectionName);
+
+        db.db.listCollections(
+            { name: collectionName }
+        )
+            .next()
+            .then(async function (info) {
+                if (info) {
+                    await db.collection.drop();
+                }
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .finally(async function () {
+                await db.client.close();
+            });
+    });
+
+
     describe('GET /documents', () => {
         it('400 SAD PATH (Throws an error when the documents collection is empty)', (done) => {
             chai.request(server)
