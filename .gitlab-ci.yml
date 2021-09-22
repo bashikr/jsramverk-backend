@@ -8,4 +8,4 @@ all_tests:
     - npm test
 
 services:
-  - mongodb
+  - mongodb:5.0.2
