@@ -14,18 +14,18 @@ var id = '';
 
 
 describe('Test the functionality of documents API', () => {
-    before(async function () {
-        this.timeout(0);
-        db = await createConnection(collectionName);
+    // before(async function () {
+    //     this.timeout(0);
+    //     db = await createConnection(collectionName);
 
-        db.db.listCollections(
-            { name: collectionName }
-        );
+    //     db.db.listCollections(
+    //         { name: collectionName }
+    //     );
 
-        await db.collection.drop();
+    //     await db.collection.drop();
 
-        await db.client.close();
-    });
+    //     await db.client.close();
+    // });
 
     // get sure that the collection you want to test is empty before you execute this test
     // install sinon or nock
