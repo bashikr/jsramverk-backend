@@ -67,101 +67,101 @@ describe('Test the functionality of documents API', () => {
         });
     });
 
-    describe('GET /documents', () => {
-        it('200 HAPPY PATH', (done) => {
-            chai.request(server)
-                .get("/documents")
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.an("array");
-                    res.body.length.should.be.above(0);
-                    for (let item in res.body) {
-                        res.body[item].should.be.an("object");
-                        id = res.body[0]._id;
-                    }
+    // describe('GET /documents', () => {
+    //     it('200 HAPPY PATH', (done) => {
+    //         chai.request(server)
+    //             .get("/documents")
+    //             .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.an("array");
+    //                 res.body.length.should.be.above(0);
+    //                 for (let item in res.body) {
+    //                     res.body[item].should.be.an("object");
+    //                     id = res.body[0]._id;
+    //                 }
 
-                    done();
-                });
-        });
-    });
+    //                 done();
+    //             });
+    //     });
+    // });
 
-    describe('GET /documents/:id', () => {
-        it('200 HAPPY PATH', (done) => {
-            chai.request(server)
-                .get("/documents/" + id)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.an("object");
-                    res.body.should.have.property("_id");
-                    res.body.should.have.property("title");
-                    res.body.should.have.property("content");
-                    res.body.should.have.property("creationDate");
+    // describe('GET /documents/:id', () => {
+    //     it('200 HAPPY PATH', (done) => {
+    //         chai.request(server)
+    //             .get("/documents/" + id)
+    //             .end((err, res) => {
+    //                 res.should.have.status(200);
+    //                 res.body.should.be.an("object");
+    //                 res.body.should.have.property("_id");
+    //                 res.body.should.have.property("title");
+    //                 res.body.should.have.property("content");
+    //                 res.body.should.have.property("creationDate");
 
-                    done();
-                });
-        });
-        it('404 SAD PATH (Requested document is not found)', (done) => {
-            let fakeId = "123456789123";
+    //                 done();
+    //             });
+    //     });
+    //     it('404 SAD PATH (Requested document is not found)', (done) => {
+    //         let fakeId = "123456789123";
 
-            chai.request(server)
-                .get("/documents/" + fakeId)
-                .end((err, res) => {
-                    res.should.have.status(404);
-                    res.body.should.be.an("object");
-                    res.body.should.have.property('error');
-                    res.body.should.have.property('error').eq('Requested document is not found');
+    //         chai.request(server)
+    //             .get("/documents/" + fakeId)
+    //             .end((err, res) => {
+    //                 res.should.have.status(404);
+    //                 res.body.should.be.an("object");
+    //                 res.body.should.have.property('error');
+    //                 res.body.should.have.property('error').eq('Requested document is not found');
 
-                    done();
-                });
-        });
-    });
+    //                 done();
+    //             });
+    //     });
+    // });
 
-    describe('PUT /documents/update-doc', () => {
-        it('201 HAPPY PATH', (done) => {
-            let updateDocument = {
-                '_method': 'put',
-                '_id': id,
-                'title': 'Test update document',
-                'content': 'update content',
-                'updateDate': new Date()
-            };
+    // describe('PUT /documents/update-doc', () => {
+    //     it('201 HAPPY PATH', (done) => {
+    //         let updateDocument = {
+    //             '_method': 'put',
+    //             '_id': id,
+    //             'title': 'Test update document',
+    //             'content': 'update content',
+    //             'updateDate': new Date()
+    //         };
 
-            chai.request(server)
-                .put("/documents/update-doc")
-                .send(updateDocument)
-                .end((err, res) => {
-                    res.should.have.status(201);
-                    res.body.should.be.an("object");
+    //         chai.request(server)
+    //             .put("/documents/update-doc")
+    //             .send(updateDocument)
+    //             .end((err, res) => {
+    //                 res.should.have.status(201);
+    //                 res.body.should.be.an("object");
 
-                    done();
-                });
-        });
-        var invalidTitle = 1;
-        var invalidContent = 1;
+    //                 done();
+    //             });
+    //     });
+    //     var invalidTitle = 1;
+    //     var invalidContent = 1;
 
-        it('400 SAD PATH (title and content not of type string)', (done) => {
-            let updateDocument = {
-                '_method': 'put',
-                '_id': id,
-                'title': invalidTitle,
-                'content': invalidContent,
-                'updateDate': new Date()
-            };
+    //     it('400 SAD PATH (title and content not of type string)', (done) => {
+    //         let updateDocument = {
+    //             '_method': 'put',
+    //             '_id': id,
+    //             'title': invalidTitle,
+    //             'content': invalidContent,
+    //             'updateDate': new Date()
+    //         };
 
-            chai.request(server)
-                .put("/documents/update-doc")
-                .send(updateDocument)
-                .end((err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.an("object");
-                    res.body.should.have.property('error');
-                    res.body.should.have.property('error')
-                        .eq('Title and content should be of type string');
+    //         chai.request(server)
+    //             .put("/documents/update-doc")
+    //             .send(updateDocument)
+    //             .end((err, res) => {
+    //                 res.should.have.status(400);
+    //                 res.body.should.be.an("object");
+    //                 res.body.should.have.property('error');
+    //                 res.body.should.have.property('error')
+    //                     .eq('Title and content should be of type string');
 
-                    done();
-                });
-        });
-    });
+    //                 done();
+    //             });
+    //     });
+    // });
 
     describe('DELETE /documents/delete-doc', () => {
         // it('200 HAPPY PATH', (done) => {
@@ -174,19 +174,19 @@ describe('Test the functionality of documents API', () => {
         //         });
         // });
 
-        it('404 SAD PATH', (done) => {
-            let fakeId = "123456789123";
+        // it('404 SAD PATH', (done) => {
+        //     let fakeId = "123456789123";
 
-            chai.request(server)
-                .delete("/documents/delete-doc/" + fakeId)
-                .end((err, res) => {
-                    res.should.have.status(404);
-                    res.body.should.have.property('error');
-                    res.body.should.have.property('error')
-                        .eq('The given document id is not found');
+        //     chai.request(server)
+        //         .delete("/documents/delete-doc/" + fakeId)
+        //         .end((err, res) => {
+        //             res.should.have.status(404);
+        //             res.body.should.have.property('error');
+        //             res.body.should.have.property('error')
+        //                 .eq('The given document id is not found');
 
-                    done();
-                });
-        });
+        //             done();
+        //         });
+        // });
     });
 });
