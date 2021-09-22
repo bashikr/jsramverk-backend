@@ -179,6 +179,7 @@ describe('Test the functionality of documents API', () => {
 
         it('404 SAD PATH', async () => {
             let fakeId = "123456789123";
+
             const res = await chai.request(server)
                 .delete("/documents/delete-doc/" + fakeId);
 
