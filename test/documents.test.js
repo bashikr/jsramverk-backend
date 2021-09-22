@@ -167,14 +167,16 @@ describe('Test the functionality of documents API', () => {
                 });
         });
 
-        it('400 SAD PATH', (done) => {
+        it('404 SAD PATH', (done) => {
+            let fakeId = "123456789123";
+
             chai.request(server)
-                .delete("/documents/delete-doc/" + id)
+                .delete("/documents/delete-doc/" + fakeId)
                 .end((err, res) => {
-                    res.should.have.status(400);
+                    res.should.have.status(404);
                     res.body.should.have.property('error');
                     res.body.should.have.property('error')
-                        .eq('The given document id is invalid');
+                        .eq('The given document id is not found');
                     done();
                 });
         });

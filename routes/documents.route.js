@@ -77,7 +77,7 @@ router.delete("/delete-doc/:id", urlencodedParser, async (request, response) => 
     if (pods.deletedCount === 1) {
         response.status(200).send(pods);
     } else {
-        response.status(400).send({ error: 'The given document id is invalid' });
+        response.status(404).send({ error: 'The given document id is not found' });
     }
 });
 
