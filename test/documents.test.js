@@ -15,6 +15,7 @@ let db;
 
 describe('Test the functionality of documents API', () => {
     before(async function() {
+        this.enableTimeouts(false);
         db = await createConnection(collectionName);
 
         db.db.listCollections(
