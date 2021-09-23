@@ -69,6 +69,25 @@ describe('Test the functionality of documents API', () => {
                     done();
                 });
         });
+        it('201 HAPPY PATH',  () => {
+            let document = {
+                '_method': 'post',
+                'title': 'Test create document',
+                'content': 'creation content',
+                'creationDate': new Date()
+            };
+
+            chai.request(server)
+                .post("/documents/create-doc")
+                .send(document)
+                .then(function (res) {
+                    res.should.have.status(201);
+                })
+                .catch(function (err) {
+                    throw err;
+                });
+        });
+
         // it('400 BAD PATH (Title and content should be of type string)',  (done) => {
         //     let wrongTitleType = 123;
         //     let document = {
