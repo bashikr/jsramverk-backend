@@ -19,11 +19,19 @@ describe('Test the functionality of documents API', () => {
 
         db.db.listCollections(
             { name: collectionName }
-        );
-
-        await db.collection.drop();
-
-        await db.client.close();
+        )
+            .next()
+            .then(async function(info) {
+                if (info) {
+                    await db.collection.drop();
+                }
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .finally(async function() {
+                await db.client.close();
+            });
     });
 
     // get sure that the collection you want to test is empty before you execute this test
