@@ -9,27 +9,25 @@ chai.should();
 chai.use(chaiHttp);
 
 var collectionName = "docs";
-var db;
 var id = '';
 
 describe('Test the functionality of documents API', () => {
-    before(async function () {
-        this.timeout(0);
-        db = await createConnection(collectionName);
+    before(async () => {
+        const db = await createConnection(collectionName);
 
         db.db.listCollections(
             { name: collectionName }
         )
             .next()
-            .then(async function (info) {
+            .then(async function(info) {
                 if (info) {
                     await db.collection.drop();
                 }
             })
-            .catch(function (err) {
+            .catch(function(err) {
                 console.error(err);
             })
-            .finally(async function () {
+            .finally(async function() {
                 await db.client.close();
             });
     });

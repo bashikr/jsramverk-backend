@@ -11,3 +11,5 @@ testsuite_image:
    - DATABASE_URL=mongodb://mongo:27017/test npm test
   services:
    - mongo:latest
+
+   

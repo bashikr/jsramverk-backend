@@ -13,7 +13,7 @@ let db;
     db = await createConnection(config.docsCollection);
 
     process.on("exit", () => {
-        db.end();
+        db.client.close();
     });
 })();
 
