@@ -8,11 +8,11 @@ try {
 }
 
 async function createConnection(collectionName) {
-    let dsn = `mongodb+srv://${config.username}:${config.password}` +
-        `@cluster0.km3rb.mongodb.net/${config.database}?retryWrites=true&w=majority`;
+    let dsn = `mongodb://localhost:27017/test`;
 
-    if (process.env.NODE_ENV === 'test') {
-        dsn = process.env.DBWEBB_DSN || `mongodb://localhost:27017/${config.database}`;
+    if (process.env.NODE_ENV !== 'test') {
+        dsn = `mongodb+srv://${config.username}:${config.password}` +
+            `@cluster0.km3rb.mongodb.net/${config.database}?retryWrites=true&w=majority`;
     }
 
     const client = await mongo.connect(dsn, {

@@ -3,44 +3,43 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
-// const createConnection = require("../connection-mongodb/db.js");
+const createConnection = require("../connection-mongodb/db.js");
 
 chai.should();
 chai.use(chaiHttp);
 
-// var collectionName = "docs";
-// var db;
+var collectionName = "docs";
+var db;
 var id = '';
 
-
 describe('Test the functionality of documents API', () => {
-    // before(async function () {
-    //     this.timeout(0);
-    //     db = await createConnection(collectionName);
+    before(async function () {
+        this.timeout(0);
+        db = await createConnection(collectionName);
 
-    //     db.db.listCollections(
-    //         { name: collectionName }
-    //     );
+        db.db.listCollections(
+            { name: collectionName }
+        );
 
-    //     await db.collection.drop();
+        await db.collection.drop();
 
-    //     await db.client.close();
-    // });
+        await db.client.close();
+    });
 
     // get sure that the collection you want to test is empty before you execute this test
     // install sinon or nock
-    // describe('GET /documents', () => {
-    //     it('400 BAD PATH (Throws an error when the documents collection is empty)', async () => {
-    //         const res = await chai.request(server)
-    //             .get("/documents");
+    describe('GET /documents', () => {
+        it('400 BAD PATH (Throws an error when the documents collection is empty)', async () => {
+            const res = await chai.request(server)
+                .get("/documents");
 
-    //         console.log(res.body);
-    //         res.should.have.status(400);
-    //         res.body.should.be.an("object");
-    //         res.body.should.have.property('error');
-    //         res.body.should.have.property('error').eq('Document collection is empty');
-    //     });
-    // });
+            console.log(res.body);
+            res.should.have.status(400);
+            res.body.should.be.an("object");
+            res.body.should.have.property('error');
+            res.body.should.have.property('error').eq('Document collection is empty');
+        });
+    });
 
     describe('POST /documents/create-doc', () => {
         it('201 HAPPY PATH', async () => {

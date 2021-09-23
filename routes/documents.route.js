@@ -10,7 +10,7 @@ router.get("/", async (request, response) => {
 
     if (pods.length > 0) {
         response.status(200).send(pods);
-    } else if (pods.length === 0) {
+    } else {
         response.status(400).send({ error: 'Document collection is empty' });
     }
 });
