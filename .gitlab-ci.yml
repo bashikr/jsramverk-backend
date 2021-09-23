@@ -1,11 +1,13 @@
-image: node:14
+stages:
+  - testing
+  - build      # part of second part of the tutorial
+  - release    # part of third part of the tutorial
 
-before_script:
-  - npm install
-
-all_tests:
+testsuite_image:
+  stage: testing
+  image: node:14
   script:
-    - npm test
-
-services:
-  - mongo
+   - npm install
+   - DATABASE_URL=mongodb://mongo:27017/test npm test
+  services:
+   - mongo:latest
