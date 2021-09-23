@@ -37,20 +37,22 @@ describe('Test the functionality of documents API', () => {
     // get sure that the collection you want to test is empty before you execute this test
     // install sinon or nock
     describe('GET /documents', () => {
-        it('400 BAD PATH (Throws an error when the documents collection is empty)', async () => {
+        it('400 BAD PATH (Throws an error when the documents collection is empty)', async (done) => {
             const res = await chai.request(server)
                 .get("/documents");
 
-            console.log(res.body);
+            // console.log(res.body);
             res.should.have.status(400);
             res.body.should.be.an("object");
             res.body.should.have.property('error');
             res.body.should.have.property('error').eq('Document collection is empty');
+
+            done();
         });
     });
 
     describe('POST /documents/create-doc', () => {
-        it('201 HAPPY PATH', async () => {
+        it('201 HAPPY PATH',  (done) => {
             let document = {
                 '_method': 'post',
                 'title': 'Test create document',
@@ -58,12 +60,14 @@ describe('Test the functionality of documents API', () => {
                 'creationDate': new Date()
             };
 
-            const res = await chai.request(server)
+            const res = chai.request(server)
                 .post("/documents/create-doc")
                 .send(document);
 
             res.should.have.status(201);
             res.body.should.be.an("object");
+
+            done();
         });
         it('400 BAD PATH (Title and content should be of type string)', async () => {
             let wrongTitleType = 123;
