@@ -2,7 +2,7 @@
 This repository contains a server that runs as a backend for an 
 assignment  in the jsramverk course, (DV1612 H21) at Blekinge Institute of Technology. It is built with Node.js, Express, and MongoDB (Atlas).
 
-[![Build Status](https://app.travis-ci.com/bashikr/jsramverk-backend.svg?branch=main)](https://app.travis-ci.com/bashikr/jsramverk-backend)
+[![Build Status](https://app.travis-ci.com/bashar_altaleb/jsramverk-backend.svg?branch=main)](https://app.travis-ci.com/bashar_altaleb/jsramverk-backend)
 ### Steps to start using jsramverk-backend are: ###
 #### First: ####
 1. Clone this repository ```git clone https://github.com/bashikr/jsramverk-backend.git```
