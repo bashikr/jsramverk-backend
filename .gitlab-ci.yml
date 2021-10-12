@@ -1,7 +1,7 @@
 stages:
   - testing
-  - build      # part of second part of the tutorial
-  - release    # part of third part of the tutorial
+  - build
+  - release
 
 testsuite_image:
   stage: testing
@@ -11,5 +11,3 @@ testsuite_image:
    - DATABASE_URL=mongodb://mongo:27017/test npm test
   services:
    - mongo:latest
-
-   
