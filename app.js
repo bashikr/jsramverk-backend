@@ -9,17 +9,20 @@ const port = process.env.PORT || 1337;
 const morgan = require('morgan');
 const cors = require('cors');
 
+require('dotenv').config();
+
 const middleWare = require('./middleware/error.handler.js');
 const index = require('./routes/index.route.js');
 const documents = require('./routes/documents.route.js');
+const authRoute = require('./routes/auth.route.js');
 const path = require('path');
 const httpServer = require("http").createServer(app);
+
 
 app.use(express.static(path.join(__dirname, '../editor-angular-frontend/dist/editor-angular')));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 const io = require("socket.io")(httpServer, {
     cors: {
@@ -47,6 +50,7 @@ io.on("connection", (socket) => {
 });
 
 
+app.use('/', authRoute);
 app.use('/', index);
 app.use('/documents', documents);
 app.use(middleWare.middleWare), app.use(middleWare.notFoundError), app.use(middleWare.errorResult);

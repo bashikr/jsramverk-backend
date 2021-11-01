@@ -1,6 +1,6 @@
 node_modules/
 connection-mongodb/config.json
-demo.http
+demo.rest
 
 # Logs
 logs
