@@ -10,7 +10,7 @@ const authHandler = require('../middleware/auth.handler');
 router.get("/", authHandler.checkToken, async (request, response) => {
     const email = request.user.email;
 
-    const pods = await documents.printAllDocs({ email });
+    const pods = await documents.printAllDocs(email);
 
 
     if (pods.length > 0) {
@@ -24,7 +24,7 @@ router.get("/", authHandler.checkToken, async (request, response) => {
 router.get("/:id", authHandler.checkToken, async (request, response) => {
     const email = request.user.email;
 
-    let idObj = ObjectId(request.params.id);
+    let idObj = request.params.id;
 
     var query = { 'email': email, 'docsId': idObj };
 
@@ -122,7 +122,6 @@ router.post("/users", authHandler.checkToken, async (request, response) => {
     }
 });
 
-
 router.post("/allow-user", authHandler.checkToken, async (request, response) => {
     var idObj = ObjectId(request.body.id);
     var allowedEmail = request.body.email;
@@ -137,13 +136,14 @@ router.post("/allow-user", authHandler.checkToken, async (request, response) => 
     if (pods.length > 0) {
         response.status(200).send(pods);
     } else {
-        response.status(400).send({ error: 'There given user is not found!' });
+        response.status(400).send({ error: 'The given user is not found!' });
     }
 });
 
+
 router.post("/shared-documents", authHandler.checkToken, async (request, response) => {
     var query = { 'email': request.user.email };
-    var pods = await documents.getSharedDocuments(query); // i get an error message
+    var pods = await documents.getSharedDocuments(query);
 
     if (pods.length > 0) {
         response.status(200).send(pods);

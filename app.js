@@ -17,19 +17,34 @@ const documents = require('./routes/documents.route.js');
 const authRoute = require('./routes/auth.route.js');
 const path = require('path');
 const httpServer = require("http").createServer(app);
-
+var { graphqlHTTP } = require('express-graphql');
+const {GraphQLSchema} = require("graphql");
+const RootQueryType = require("./graphql/root.js");
+const authHandler = require('./middleware/auth.handler');
 
 app.use(express.static(path.join(__dirname, '../editor-angular-frontend/dist/editor-angular')));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const schema = new GraphQLSchema({
+    query: RootQueryType
+});
+
+app.use('/graphql', authHandler.checkToken, graphqlHTTP({
+    schema: schema,
+    graphiql: false, // Visual är satt till true under utveckling
+}));
+
+
+
 const io = require("socket.io")(httpServer, {
     cors: {
-        origin: ["http://localhost:4200", 'http://www.student.bth.se'],
+        origin: "*",
         methods: ["GET", "POST", "PUT"]
     }
 });
+
 
 io.on("connection", (socket) => {
     socket.on('openDoc', function (docId) {

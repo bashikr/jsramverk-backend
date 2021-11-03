@@ -1,4 +1,6 @@
 const createConnection = require('../connection-mongodb/db.js');
+const { ObjectId } = require('bson');
+
 var config;
 
 try {
@@ -18,13 +20,15 @@ let db;
 })();
 
 async function printAllDocs(user) {
-    const res = await db.collection.findOne(user);
+    const res = await db.collection.findOne({ 'email': user });
 
     return res['docs'];
 }
 
 async function printOneDoc(query) {
-    const res = await db.collection.findOne({ "docs._id": query.docsId },
+    const docId = ObjectId(query.docsId);
+
+    const res = await db.collection.findOne({ "docs._id": docId },
         { projection: { "docs.$": 1, "_id": 0 } });
 
     return res['docs'][0];
@@ -55,7 +59,7 @@ async function deleteADoc(query, update, options) {
 
 async function printAllUsersEmails(user) {
     const res = await db.collection.find(
-        {email: {$ne: user}},
+        { email: { $ne: user } },
         { 'projection': { 'email': 1, '_id': 0 } }).toArray();
 
     return res;
@@ -68,11 +72,60 @@ async function giveUserPermission(user, docInsertionOrder) {
 }
 
 async function getSharedDocuments(user) {
-    const res = await db.collection.find({'docs.allowed_users': user.email},
-        { 'projection': { 'email': 0, '_id': 0, 'firstName': 0, 'lastName': 0,
-            'password': 0} }).toArray();
+    const res = await db.collection.aggregate([
+        {
+            "$match": {
+                "docs.allowed_users": user.email
+            }
+        },
+        {
+            "$project": {
+                "docs": {
+                    "$filter": {
+                        "input": {
+                            "$map": {
+                                "input": "$docs",
+                                "as": "doc",
+                                "in": {
+                                    "_id": "$$doc._id",
+                                    "title": "$$doc.title",
+                                    "content": "$$doc.content",
+                                    "creationDate": "$$doc.creationDate",
+                                    "updateDate": "$$doc.updateDate",
+                                    "allowed_users": "$$doc.allowed_users",
+                                },
+                            }
+                        },
+                        "as": "doc",
+                        "cond": {
+                            "$and": [
+                                {
+                                    "$ne": [
+                                        "$$doc.allowed_users",
+                                        undefined
+                                    ]
+                                },
+                                {
+                                    "$ne": [
+                                        "$$doc.allowed_users",
+                                        null
+                                    ]
+                                },
+                                {
+                                    "$ne": [
+                                        "$$doc.allowed_users",
+                                        []
+                                    ]
+                                }
+                            ]
+                        },
+                    }
+                }
+            }
+        }
+    ]).toArray();
 
-    return res[0]['docs'];
+    return res;
 }
 
 async function modifySharedDocuments(user, docToUpdate, options) {

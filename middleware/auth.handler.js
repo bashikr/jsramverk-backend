@@ -12,7 +12,6 @@ function checkToken(req, res, next) {
                 return res.sendStatus(403);
             } else {
                 req.user = user;
-                // res.json({ user });
                 next();
             }
         });
