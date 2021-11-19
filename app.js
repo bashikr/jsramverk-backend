@@ -13,6 +13,7 @@ require('dotenv').config();
 
 const middleWare = require('./middleware/error.handler.js');
 const index = require('./routes/index.route.js');
+const emailService = require('./routes/email.route.js');
 const documents = require('./routes/documents.route.js');
 const authRoute = require('./routes/auth.route.js');
 const path = require('path');
@@ -35,8 +36,6 @@ app.use('/graphql', authHandler.checkToken, graphqlHTTP({
     schema: schema,
     graphiql: false, // Visual är satt till true under utveckling
 }));
-
-
 
 const io = require("socket.io")(httpServer, {
     cors: {
@@ -67,6 +66,7 @@ io.on("connection", (socket) => {
 
 app.use('/', authRoute);
 app.use('/', index);
+app.use('/collaboration-invite', emailService);
 app.use('/documents', documents);
 app.use(middleWare.middleWare), app.use(middleWare.notFoundError), app.use(middleWare.errorResult);
 

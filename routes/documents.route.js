@@ -38,7 +38,6 @@ router.get("/:id", authHandler.checkToken, async (request, response) => {
 });
 
 
-
 router.post("/create-doc", authHandler.checkToken, urlencodedParser, async (request, response) => {
     const docInsertionOrder = {
         '_id': new ObjectId(),
@@ -59,6 +58,7 @@ router.post("/create-doc", authHandler.checkToken, urlencodedParser, async (requ
         response.status(400).send({ error: 'Title and content should be of type string' });
     }
 });
+
 
 router.put("/update-doc", authHandler.checkToken, urlencodedParser, async (request, response) => {
     let idObj = ObjectId(request.body._id);
@@ -86,6 +86,7 @@ router.put("/update-doc", authHandler.checkToken, urlencodedParser, async (reque
         response.status(400).send({ error: 'Title and content should be of type string' });
     }
 });
+
 
 router.delete("/delete-doc/:id",
     authHandler.checkToken, urlencodedParser, async (request, response) => {
@@ -122,22 +123,20 @@ router.post("/users", authHandler.checkToken, async (request, response) => {
     }
 });
 
-router.post("/allow-user", authHandler.checkToken, async (request, response) => {
-    var idObj = ObjectId(request.body.id);
-    var allowedEmail = request.body.email;
-    var query = { 'email': request.user.email, 'docs._id': idObj };
+
+router.get("/allow-user/:id/:emailSender/:emailReceiver", async (request, response) => {
+    var idObj = ObjectId(request.params.id);
+    var emailReceiver = request.params.emailReceiver;
+    var emailSender = request.params.emailSender;
+    var query = { 'email': emailSender, 'docs._id': idObj };
     var update = {
-        $addToSet: { 'docs.$.allowed_users': allowedEmail },
+        $addToSet: { 'docs.$.allowed_users': emailReceiver },
         $set: { 'docs.$.updateDate': new Date() }
     };
 
-    const pods = await documents.giveUserPermission(query, update);
+    await documents.giveUserPermission(query, update);
 
-    if (pods.length > 0) {
-        response.status(200).send(pods);
-    } else {
-        response.status(400).send({ error: 'The given user is not found!' });
-    }
+    return response.redirect('http://www.student.bth.se/~baaa19/editor-angular/');
 });
 
 
@@ -151,6 +150,7 @@ router.post("/shared-documents", authHandler.checkToken, async (request, respons
         response.status(400).send({ error: 'There is no users!' });
     }
 });
+
 
 router.put("/modify-shared-documents", authHandler.checkToken, async (request, response) => {
     var idObj = ObjectId(request.body._id);
