@@ -43,6 +43,7 @@ router.post("/create-doc", authHandler.checkToken, urlencodedParser, async (requ
         '_id': new ObjectId(),
         'title': request.body.title,
         'content': request.body.content,
+        'docType': request.body.docType,
         'creationDate': new Date(),
         'updateDate': null,
     };
@@ -69,6 +70,7 @@ router.put("/update-doc", authHandler.checkToken, urlencodedParser, async (reque
                 '_id': idObj,
                 'title': request.body.title,
                 'content': request.body.content,
+                'docType': request.body.docType,
                 'creationDate': request.body.creationDate,
                 'updateDate': new Date(),
             },

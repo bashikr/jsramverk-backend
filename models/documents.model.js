@@ -91,6 +91,7 @@ async function getSharedDocuments(user) {
                                     "title": "$$doc.title",
                                     "content": "$$doc.content",
                                     "creationDate": "$$doc.creationDate",
+                                    "docType": "$$doc.docType",
                                     "updateDate": "$$doc.updateDate",
                                     "allowed_users": "$$doc.allowed_users",
                                 },
