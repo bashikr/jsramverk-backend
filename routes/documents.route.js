@@ -22,18 +22,16 @@ router.get("/", authHandler.checkToken, async (request, response) => {
 
 
 router.get("/:id", authHandler.checkToken, async (request, response) => {
-    const email = request.user.email;
-
+    let email = request.user.email;
     let idObj = request.params.id;
+    let query = { 'email': email, 'docsId': idObj };
 
-    var query = { 'email': email, 'docsId': idObj };
+    try {
+        let pods = await documents.printOneDoc(query);
 
-    let pods = await documents.printOneDoc(query);
-
-    if (pods === null) {
-        return response.status(404).send({ error: 'Requested document is not found' });
-    } else {
         return response.status(200).send(pods);
+    } catch (e) {
+        return response.status(404).send({ error: 'Requested document is not found' });
     }
 });
 

@@ -6,7 +6,6 @@ const emailService = require('../models/sendgrid.model.js');
 
 
 router.post("/", authHandler.checkToken, urlencodedParser, async (request, response) => {
-    console.log('test');
     const email = request.body.email;
     const title = request.body.title;
     const userEmail = request.user.email;
